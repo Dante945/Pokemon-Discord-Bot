@@ -69,7 +69,7 @@ async def on_message(message):
     # Ensures the bot doesnt interact with itself
     if message.author == client.user:
         return
-    # Spawns a pokemon
+    # Manually spawns a pokemon
     if message.content.startswith('%spawn'):
         channel = message.channel
         user = message.author.id
@@ -161,21 +161,51 @@ async def on_message(message):
         else:
             await message.channel.send(f"Invalid Dex Number!")
 
-    # if message.content.startswith(''):
-    #     channel = message.channel
-    #     spawn = random.randint(0,30);
-    #     if spawn == 1:
-    #         rand_choice = random.randint(1,151)
-    #         #pokemon = Kanto_dex[rand_choice]
-    #         await message.channel.send("Who's that Pokemon!")
-    #         await message.channel.send(f"https://play.pokemonshowdown.com/sprites/xyani/{pokemon.name}.gif")
+        # Random Spawn
+        if message.content.startswith(''):
+            channel = message.channel
+            user = message.author.id
+            spawn = random.randint(1, 30)
+            if spawn == 1:
+                # Generates pokemon and displays a gif for the user to guess the name
+                pokemon = initialize_pokemon()
+                await message.channel.send("Who's that Pokemon!")
+                await message.channel.send(f"https://play.pokemonshowdown.com/sprites/xyani/{pokemon['Name']}.gif")
 
-    #         def check(m):
-    #             return m.content.upper() == pokemon.name.upper() and m.channel == channel
+                # Validates if name is correct
+                def check(m):
+                    return m.content.upper() == pokemon['Name'].upper() and m.channel == channel
 
-    #         msg = await client.wait_for('message', check=check)
-    #         await channel.send('correct!'.format(msg))
+                msg = await client.wait_for('message', check=check)
+                await channel.send('correct!'.format(msg))
 
+                # Initial Entry if json file is empty
+                pokemon_list = [json.dumps(pokemon)]
+                new_pokemon = {
+                    user: pokemon_list
+                }
+
+                # Try to open the json file to load its data, if empty: initialize
+                try:
+                    with open("pokemon_storage.json", "r") as data_file:
+                        data = json.load(data_file)
+                except json.decoder.JSONDecodeError:
+                    with open("pokemon_storage.json", "w") as data_file:
+                        json.dump(new_pokemon, data_file)
+                else:
+                    # Either adds pokemon to users existing list
+                    if str(user) in data:
+                        data[str(user)].append(json.dumps(pokemon))
+                        data.update(data)
+                        with open("pokemon_storage.json", "w") as data_file:
+                            json.dump(data, data_file)
+                    else:
+                        # Or creates new list and adds first pokemon
+                        data[str(user)] = []
+                        data[str(user)].append(json.dumps(pokemon))
+                        data.update(data)
+                        with open("pokemon_storage.json", "w") as data_file:
+                            json.dump(data, data_file)
 
 my_secret = os.environ['token']
 keep_alive()
