@@ -162,11 +162,11 @@ async def on_message(message):
             await message.channel.send(f"Invalid Dex Number!")
 
         # Random Spawn
-        if message.content.startswith(''):
-            channel = message.channel
-            user = message.author.id
-            spawn = random.randint(1, 30)
-            if spawn == 1:
+    if message.content.startswith(''):
+        channel = message.channel
+        user = message.author.id
+        spawn = random.randint(1, 30)
+        if spawn == 1:
                 # Generates pokemon and displays a gif for the user to guess the name
                 pokemon = initialize_pokemon()
                 await message.channel.send("Who's that Pokemon!")
