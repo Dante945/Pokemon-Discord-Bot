@@ -1,6 +1,6 @@
 # Pokemon-Discord-Bot
 ## Utility
-Spawning - Every message has a 1/10 chance of spawning a pokemon
+Spawning - Every message has a 1/10 chance of spawning a pokemon\n
          - After a successful spawn, the user who spawned the pokemon will be on a 10 message cooldown to prevent spamming
          - Guessing the pokemons name will result in you catching the pokemon
         
