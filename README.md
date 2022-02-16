@@ -31,7 +31,7 @@ Dex Navigation
 - Once a reactions is added, it will switch pages and remove all current reactions
 - If nothing happens for 60 seconds, it will delete the message and embed
 
-##Plans for the future
+## Plans for the future
 Battles
 - Create a 1v1 battle system
 - Add things like a move pool and action system to the bot
